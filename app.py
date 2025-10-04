@@ -105,6 +105,11 @@ def transcriber(yt_url):
 # Streamlit UI Setup
 st.set_page_config(page_icon="📝", page_title="TastyText: The Text Summarizer")
 st.title("📝 TastyText: The Text Summarizer")
+# Short description right below the title
+st.markdown(
+    "Instantly summarize articles, blogs, webpages, or YouTube videos "
+    "into clear 3-sentence summaries or detailed paragraphs with key points."
+)
 st.subheader("Summarize Any URL")
 
 # Get URL from the user
@@ -183,3 +188,4 @@ st.sidebar.info(
     """
 
 )
+
