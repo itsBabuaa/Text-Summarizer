@@ -14,12 +14,12 @@ import os
 load_dotenv()
 
 # API Keys
-#groq_api_key = st.secrets["GROQ_API_KEY"]  # For Streamlit Deployment
-groq_api_key = os.getenv("GROQ_API_KEY")    # For LocalHost Testing
+groq_api_key = st.secrets["GROQ_API_KEY"]  # For Streamlit Deployment
+#groq_api_key = os.getenv("GROQ_API_KEY")    # For LocalHost Testing
 
 # Langsmith Tracking
-#os.environ['LANGCHAIN_API_KEY'] = st.secrets["LANGCHAIN_API_KEY"]  # For Streamlit Deployment
-os.environ['LANGCHAIN_API_KEY'] = os.getenv("LANGCHAIN_API_KEY")    # For LocalHost Testing
+os.environ['LANGCHAIN_API_KEY'] = st.secrets["LANGCHAIN_API_KEY"]  # For Streamlit Deployment
+#os.environ['LANGCHAIN_API_KEY'] = os.getenv("LANGCHAIN_API_KEY")    # For LocalHost Testing
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "Text Summarizer"
 
@@ -181,4 +181,5 @@ st.sidebar.info(
 
     🚀 Simply paste the URL above and click "Generate Summary" to get a concise, structured overview!
     """
+
 )
