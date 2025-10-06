@@ -3,7 +3,7 @@ import validators
 from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
 from langchain.chains.summarize import load_summarize_chain
-from langchain_community.document_loaders import UnstructuredURLLoader
+from langchain_community.document_loaders import UnstructuredURLLoader, YoutubeLoader
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import VideoUnavailable, TranscriptsDisabled
 from langchain.docstore.document import Document
@@ -14,12 +14,12 @@ import os
 load_dotenv()
 
 # API Keys
-groq_api_key = st.secrets["GROQ_API_KEY"]  # For Streamlit Deployment
-#groq_api_key = os.getenv("GROQ_API_KEY")    # For LocalHost Testing
+#groq_api_key = st.secrets["GROQ_API_KEY"]  # For Streamlit Deployment
+groq_api_key = os.getenv("GROQ_API_KEY")    # For LocalHost Testing
 
 # Langsmith Tracking
-os.environ['LANGCHAIN_API_KEY'] = st.secrets["LANGCHAIN_API_KEY"]  # For Streamlit Deployment
-#os.environ['LANGCHAIN_API_KEY'] = os.getenv("LANGCHAIN_API_KEY")    # For LocalHost Testing
+#os.environ['LANGCHAIN_API_KEY'] = st.secrets["LANGCHAIN_API_KEY"]  # For Streamlit Deployment
+os.environ['LANGCHAIN_API_KEY'] = os.getenv("LANGCHAIN_API_KEY")    # For LocalHost Testing
 os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_PROJECT"] = "Text Summarizer"
 
@@ -141,8 +141,23 @@ if st.button("🚀 Generate Summary", type="primary"):
             with st.spinner("In Progress..."):
                 # Loading the YT or the web page data
                 if "youtube.com" in input_url or "youtu.be" in input_url:
-                    docs, yt_error, video_id = transcriber(input_url)
+                    
+                    # Video thumbnail 
+                    video_id = extract_video_id(input_url)
                     st.image(f"http://img.youtube.com/vi/{video_id}/0.jpg", use_container_width =True)
+                    
+                    # Code for YoutubeLoader
+                    # try:
+                    #     loader = YoutubeLoader.from_youtube_url(input_url)
+                    #     docs = loader.load()
+                    # except VideoUnavailable:
+                    #     print("❌ Video is unavailable or private.")
+                    # except TranscriptsDisabled:
+                    #     print("❌ Transcripts are disabled for this video.")
+                    # except Exception as e:
+                    #     print(f"⚠️ Unexpected error: {e}")
+                    
+                    docs, yt_error, video_id = transcriber(input_url)
                     if yt_error:
                         st.error(yt_error)
                 else:
@@ -186,6 +201,4 @@ st.sidebar.info(
 
     🚀 Simply paste the URL above and click "Generate Summary" to get a concise, structured overview!
     """
-
 )
-
