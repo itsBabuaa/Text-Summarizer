@@ -5,4 +5,5 @@ langchain_community
 langchain-groq
 validators
 youtube-transcript-api==1.1.1
+pytube
 unstructured
